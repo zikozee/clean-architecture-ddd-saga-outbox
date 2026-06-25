@@ -1,0 +1,43 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.food.ordering.system</groupId>
+        <artifactId>order-service</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>order-container</artifactId>
+    <packaging>jar</packaging>
+
+    <name>order-container</name>
+
+    <properties>
+    </properties>
+
+
+    <!--This should contain all the submodules in order to be built as a single jar however,
+            remember
+            order-application
+            order-dataaccess
+            order-messaging
+
+            contains  order-application-service
+            which in turn contains
+                order-domain-core
+    -->
+    <dependencies>
+        <dependency>
+            <groupId>com.food.ordering.system</groupId>
+            <artifactId>order-application</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.food.ordering.system</groupId>
+            <artifactId>order-dataaccess</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.food.ordering.system</groupId>
+            <artifactId>order-messaging</artifactId>
+        </dependency>
+    </dependencies>
+</project>

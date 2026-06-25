@@ -1,0 +1,96 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>4.1.0</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.food.ordering.system</groupId>
+    <artifactId>food-ordering-system</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <properties>
+        <!--release replaced maven.compiler.(source,target)-->
+<!--        <maven.compiler.source>26</maven.compiler.source>-->
+<!--        <maven.compiler.target>26</maven.compiler.target>-->
+
+        <java.version>26</java.version>
+        <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
+    </properties>
+
+    <packaging>pom</packaging>
+    <name>food-ordering-system</name>
+
+    <modules>
+        <module>order-service</module>
+        <module>common</module>
+    </modules>
+
+
+    <!-- unifies the versions for dependencies in the child module
+       adding the dependencies here, will auto-inject the dependency version into any submodule needing the dependency
+       without necessarily defining the version in the submodule needing the dependency
+
+       so it will be a good idea to add all the modules with project.version here (base pom.xml)
+       because all the local dependencies from each other
+
+
+       NOTE: order-container will not be added here since no other module needs it rather it needs another modules
+       -->
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.food.ordering.system</groupId>
+                <artifactId>order-domain-core</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.food.ordering.system</groupId>
+                <artifactId>order-application-service</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.food.ordering.system</groupId>
+                <artifactId>order-application</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.food.ordering.system</groupId>
+                <artifactId>order-dataaccess</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.food.ordering.system</groupId>
+                <artifactId>order-messaging</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.food.ordering.system</groupId>
+                <artifactId>common-domain</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <!--https://maven.apache.org/plugins/maven-compiler-plugin/examples/set-compiler-release.html-->
+                <configuration>
+                    <release>26</release>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>
