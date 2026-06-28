@@ -13,7 +13,7 @@ import java.time.ZonedDateTime;
 
 
 public class OrderPaidEvent extends OrderEvent {
-    protected OrderPaidEvent(Order order, ZonedDateTime createdAt) {
+    public OrderPaidEvent(Order order, ZonedDateTime createdAt) {
         super(order, createdAt);
     }
 }
