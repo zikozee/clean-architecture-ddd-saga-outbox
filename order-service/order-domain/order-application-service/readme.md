@@ -37,3 +37,8 @@ remember this is how clients or order services talk to the domain via the applic
     - 
     - **repository package**
       - it is the responsibility of the the repository to convert to and fro JPA
+
+# publish-event-option-1
+- is this version we rely on spring proxying by creating the OrderCreateHelper 
+- such that we mark the persistOrder in OrderCreateHelper as @Transactional so that we call it from the OrderCreateCommandHandler
+- to be sure the proxying will trigger the @Transactional and when done we can then publish the orderCreateEvent
