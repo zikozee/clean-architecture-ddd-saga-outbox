@@ -37,3 +37,8 @@ remember this is how clients or order services talk to the domain via the applic
     - 
     - **repository package**
       - it is the responsibility of the the repository to convert to and fro JPA
+
+## publish-event-option-2
+- The @TransactionalEventListener in OrderCreatedEventApplicationListener will only work if the publisher (ApplicationDomainEventPublisher)
+- is called from a method that has a running Transaction (OrderCreateCommandHandler.createOrder has @Transactional)
+- if the transaction succeeds(i.e the whole method with @Transactional executes) then this Listener is triggered
