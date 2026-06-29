@@ -12,6 +12,7 @@ import com.food.ordering.system.order.service.domain.entity.Restaurant;
 import com.food.ordering.system.order.service.domain.exception.OrderDomainException;
 import com.food.ordering.system.order.service.domain.mapper.OrderDataMapper;
 import com.food.ordering.system.order.service.domain.ports.input.service.OrderApplicationService;
+import com.food.ordering.system.order.service.domain.ports.output.ai.order.noteinterpreter.OrderNoteInterpreter;
 import com.food.ordering.system.order.service.domain.ports.output.repository.CustomerRepository;
 import com.food.ordering.system.order.service.domain.ports.output.repository.OrderRepository;
 import com.food.ordering.system.order.service.domain.ports.output.repository.RestaurantRepository;
@@ -56,6 +57,9 @@ class OrderApplicationServiceTest {
     @Autowired
     private RestaurantRepository restaurantRepository;
 
+    @Autowired
+    private OrderNoteInterpreter orderNoteInterpreter;
+
     private CreateOrderCommand createOrderCommand;
     private CreateOrderCommand createOrderCommandWrongPrice;
     private CreateOrderCommand createOrderCommandWrongProductPrice;
@@ -69,6 +73,9 @@ class OrderApplicationServiceTest {
 
     @BeforeAll
     void init(){
+
+        String orderNotes = "no onions pls, with pickles, extra spicy but not too spicy. Leave at the door!";
+
         createOrderCommand = CreateOrderCommand.builder()
                 .customerId(CUSTOMER_ID)
                 .restaurantId(RESTAURANT_ID)
@@ -91,6 +98,7 @@ class OrderApplicationServiceTest {
                                 .price(new BigDecimal("50.00"))
                                 .subTotal(new BigDecimal("150.00"))
                                 .build()))
+                .orderNotes(orderNotes)
                 .build();
 
         createOrderCommandWrongPrice = CreateOrderCommand.builder()
@@ -153,8 +161,16 @@ class OrderApplicationServiceTest {
                 .active(true)
                 .build();
 
+        OrderPreferences orderPreferences = OrderPreferences.builder()
+                .addIngredients(List.of("pickle"))
+                .removeIngredients(List.of("onions"))
+                .spiceLevel(SpiceLevel.MEDIUM)
+                .deliveryInstructions("Leave at the door")
+                .build();
+
         Order order = orderDataMapper.createOrderCommandToOrder(createOrderCommand);
         order.setId(new OrderId(ORDER_ID));
+        order.updateOrderPreferences(orderPreferences);
 
 
         when(customerRepository.findCustomer(CUSTOMER_ID)).thenReturn(Optional.of(customer));
@@ -162,6 +178,8 @@ class OrderApplicationServiceTest {
                 .thenReturn(Optional.of(restaurantResponse));
 
         when(orderRepository.save(any(Order.class))).thenReturn(order);
+
+        when(orderNoteInterpreter.interpret(orderNotes)).thenReturn(orderPreferences);
     }
 
     @Test
