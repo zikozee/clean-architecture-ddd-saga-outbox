@@ -59,12 +59,12 @@ class OrderApplicationServiceTest {
     private CreateOrderCommand createOrderCommand;
     private CreateOrderCommand createOrderCommandWrongPrice;
     private CreateOrderCommand createOrderCommandWrongProductPrice;
-    private final UUID CUSTOMER_ID = UUID.fromString("75eb9912-87e1-4cb1-a73b-d4b376495b92");
-    private final UUID RESTAURANT_ID = UUID.fromString("69c36f67-4056-4b58-a3e0-1fad4ea414a8");
-    private final UUID PRODUCT_ID = UUID.fromString("c44469f1-76d3-4d2d-b452-3346f49a4e17");
-    private final UUID PRODUCT_ID_2 = UUID.fromString("4b060564-aec2-4a19-b4c1-a637e5d26f87");
-    private final UUID ORDER_ID = UUID.fromString("a6e9ac84-05d2-4fec-84b5-fe08abac35f4");
-    private final BigDecimal PRICE = new BigDecimal("200.00");
+    private static final UUID CUSTOMER_ID = UUID.fromString("75eb9912-87e1-4cb1-a73b-d4b376495b92");
+    private static final UUID RESTAURANT_ID = UUID.fromString("69c36f67-4056-4b58-a3e0-1fad4ea414a8");
+    private static final UUID PRODUCT_ID = UUID.fromString("c44469f1-76d3-4d2d-b452-3346f49a4e17");
+    private static final UUID PRODUCT_ID_2 = UUID.fromString("4b060564-aec2-4a19-b4c1-a637e5d26f87");
+    private static final UUID ORDER_ID = UUID.fromString("a6e9ac84-05d2-4fec-84b5-fe08abac35f4");
+    private static final BigDecimal PRICE = new BigDecimal("200.00");
 
 
     @BeforeAll
