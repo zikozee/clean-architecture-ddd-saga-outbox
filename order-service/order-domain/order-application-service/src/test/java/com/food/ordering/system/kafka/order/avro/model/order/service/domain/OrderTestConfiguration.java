@@ -1,12 +1,14 @@
 package com.food.ordering.system.kafka.order.avro.model.order.service.domain;
 
 
-import com.food.ordering.system.kafka.order.avro.model.order.service.domain.ports.output.message.listener.payment.OrderCancelledPaymentRequestMessagePublisher;
-import com.food.ordering.system.kafka.order.avro.model.order.service.domain.ports.output.message.listener.payment.OrderCreatedPaymentRequestMessagePublisher;
-import com.food.ordering.system.kafka.order.avro.model.order.service.domain.ports.output.message.listener.restaurantapproval.OrderPaidRestaurantMessagePublisher;
-import com.food.ordering.system.kafka.order.avro.model.order.service.domain.ports.output.repository.CustomerRepository;
-import com.food.ordering.system.kafka.order.avro.model.order.service.domain.ports.output.repository.OrderRepository;
-import com.food.ordering.system.kafka.order.avro.model.order.service.domain.ports.output.repository.RestaurantRepository;
+import com.food.ordering.system.order.service.domain.ports.output.message.listener.payment.OrderCancelledPaymentRequestMessagePublisher;
+import com.food.ordering.system.order.service.domain.ports.output.message.listener.payment.OrderCreatedPaymentRequestMessagePublisher;
+import com.food.ordering.system.order.service.domain.ports.output.message.listener.restaurantapproval.OrderPaidRestaurantMessagePublisher;
+import com.food.ordering.system.order.service.domain.ports.output.repository.CustomerRepository;
+import com.food.ordering.system.order.service.domain.ports.output.repository.OrderRepository;
+import com.food.ordering.system.order.service.domain.ports.output.repository.RestaurantRepository;
+import com.food.ordering.system.order.service.domain.OrderDomainService;
+import com.food.ordering.system.order.service.domain.OrderDomainServiceImpl;
 import org.mockito.Mockito;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
