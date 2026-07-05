@@ -13,8 +13,7 @@
         {
             "name": "sagaId",
             "type": {
-                "type": "string",
-                "logicalType": "uuid"
+                "type": "string"
             }
         },
         {
@@ -57,7 +56,7 @@
             "name": "price",
             "type": {
                 "type": "bytes",
-                "logicalType": "big-decimal",
+                "logicalType": "decimal",
                 "precision": 10,
                 "scale": 2
             }
