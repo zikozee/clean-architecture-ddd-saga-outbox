@@ -1,9 +1,9 @@
 package com.food.ordering.system.kafka.order.avro.model.order.service.domain;
 
 
-import com.food.ordering.system.order.service.domain.ports.output.message.listener.payment.OrderCancelledPaymentRequestMessagePublisher;
-import com.food.ordering.system.order.service.domain.ports.output.message.listener.payment.OrderCreatedPaymentRequestMessagePublisher;
-import com.food.ordering.system.order.service.domain.ports.output.message.listener.restaurantapproval.OrderPaidRestaurantMessagePublisher;
+import com.food.ordering.system.order.service.domain.ports.output.message.publisher.payment.OrderCancelledPaymentRequestMessagePublisher;
+import com.food.ordering.system.order.service.domain.ports.output.message.publisher.payment.OrderCreatedPaymentRequestMessagePublisher;
+import com.food.ordering.system.order.service.domain.ports.output.message.publisher.restaurantapproval.OrderPaidRestaurantMessagePublisher;
 import com.food.ordering.system.order.service.domain.ports.output.repository.CustomerRepository;
 import com.food.ordering.system.order.service.domain.ports.output.repository.OrderRepository;
 import com.food.ordering.system.order.service.domain.ports.output.repository.RestaurantRepository;
