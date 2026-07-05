@@ -1,4 +1,4 @@
-package com.food.ordering.system.kafka.order.avro.model.order.service.domain;
+package com.food.ordering.system.order.service.domain;
 
 
 import com.food.ordering.system.order.service.domain.ports.output.message.publisher.payment.OrderCancelledPaymentRequestMessagePublisher;
@@ -7,8 +7,6 @@ import com.food.ordering.system.order.service.domain.ports.output.message.publis
 import com.food.ordering.system.order.service.domain.ports.output.repository.CustomerRepository;
 import com.food.ordering.system.order.service.domain.ports.output.repository.OrderRepository;
 import com.food.ordering.system.order.service.domain.ports.output.repository.RestaurantRepository;
-import com.food.ordering.system.order.service.domain.OrderDomainService;
-import com.food.ordering.system.order.service.domain.OrderDomainServiceImpl;
 import org.mockito.Mockito;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
