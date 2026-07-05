@@ -1,4 +1,4 @@
-package com.food.ordering.system.kafka.order.avro.model.order.service.domain;
+package com.food.ordering.system.order.service.domain;
 
 
 import com.food.ordering.system.order.service.domain.dto.create.CreateOrderCommand;

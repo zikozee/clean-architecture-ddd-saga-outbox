@@ -14,7 +14,7 @@ import java.util.List;
  * @date : 25 Jun, 2026
  */
 
-/** notice: the events are returned as response. This is deliberate so that
+/* notice: the events are returned as response. This is deliberate so that
     - the events firing process will be from the caller service (application service)
     - since we expect that the underlying business operations should be persisted before event firing and not the other way around
     - hence the question then is where will we interact with the repository ?, that should be the same place we fire the event
@@ -31,7 +31,7 @@ import java.util.List;
     - However, I prefer integrating a domain-service in front of a domain
         - so application service will not interact directly with the entity, hence events creation can be moved to the domain service
 
- */
+ **/
 public interface OrderDomainService {
 
     OrderCreatedEvent validateAndInitiateOrder(Order order, Restaurant restaurant);
