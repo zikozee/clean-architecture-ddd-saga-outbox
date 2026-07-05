@@ -35,7 +35,7 @@ spring:
     # instead of multiple insert statement and multiple values
 
     # stringtype=unspecified :: tells JDBC driver to set all strings untypes this prevents string checking on UUID type in postgres
-    url: jdbc:postgresql://localhost:5432/postgres?currentSchema=order&binaryTransfer=true&reWriteBatchedInserts=true&stringtype=unspecified
+    url: jdbc:postgresql://localhost:5432/food_ordering_system?currentSchema=order&binaryTransfer=true&reWriteBatchedInserts=true&stringtype=unspecified
     username: postgres
     password: admin
     driver-class-name: org.postgresql.Driver
