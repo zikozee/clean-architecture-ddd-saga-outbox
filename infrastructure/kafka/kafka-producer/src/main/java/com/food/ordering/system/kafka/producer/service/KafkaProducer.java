@@ -5,7 +5,7 @@ import org.apache.avro.specific.SpecificRecordBase;
 import org.springframework.kafka.support.SendResult;
 
 import java.io.Serializable;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 /**
  * @dev : Ezekiel Eromosei
@@ -13,5 +13,5 @@ import java.util.function.Consumer;
  */
 
 public interface KafkaProducer<K extends Serializable, V extends SpecificRecordBase> {
-    void send(String topic, K key, V message, Consumer<SendResult<K, V>> onSuccess, Consumer<Throwable> onError);
+    void send(String topic, K key, V message, BiConsumer<SendResult<K, V>, Throwable> callback);
 }
