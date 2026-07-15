@@ -29,4 +29,6 @@ public class CreateOrderCommand {
     private final List<CreateOrderItem> items;
     @NotNull
     private final OrderAddress address;
+
+    private final String orderNotes;
 }
