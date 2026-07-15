@@ -12,18 +12,25 @@
     <groupId>com.food.ordering.system</groupId>
     <artifactId>food-ordering-system</artifactId>
     <version>1.0-SNAPSHOT</version>
+
     <properties>
         <!--release replaced maven.compiler.(source,target)-->
 <!--        <maven.compiler.source>26</maven.compiler.source>-->
 <!--        <maven.compiler.target>26</maven.compiler.target>-->
 
         <java.version>26</java.version>
-        <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
-        <mockito.version>5.23.0</mockito.version>
-        <spring-kafka.version>4.1.0</spring-kafka.version>
+        <!--should match kafka version or must be close so i moved to latest though kafka version is 8.2.2-->
         <kafka-avro-serializer>8.3.0</kafka-avro-serializer>
         <avro.version>1.12.1</avro.version>
         <spring-ai.version>2.0.0</spring-ai.version>
+
+
+        <!--
+        inferred from parent
+          <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
+          <mockito.version>5.23.0</mockito.version>
+          <spring-kafka.version>4.1.0</spring-kafka.version>
+        -->
     </properties>
 
     <packaging>pom</packaging>
@@ -33,6 +40,7 @@
         <module>order-service</module>
         <module>common</module>
         <module>infrastructure</module>
+        <module>customer-service</module>
     </modules>
 
 

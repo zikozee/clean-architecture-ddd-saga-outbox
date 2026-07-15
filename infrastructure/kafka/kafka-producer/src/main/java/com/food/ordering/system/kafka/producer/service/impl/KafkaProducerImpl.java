@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 
 /**
@@ -29,19 +30,13 @@ public class KafkaProducerImpl<K extends Serializable, V extends SpecificRecordB
     private final KafkaTemplate<K, V> kafkaTemplate;
 
     @Override
-    public void send(String topic, K key, V message, Consumer<SendResult<K, V>> onSuccess, Consumer<Throwable> onError) {
+    public void send(String topic, K key, V message, BiConsumer<SendResult<K, V>, Throwable> callback) {
         log.info("sending message={} to topic={}", message, topic);
 
         try {
 
-            kafkaTemplate.send(topic, key, message)
-                    .whenComplete((result, ex) -> {
-                       if(ex != null) {
-                           onError.accept(ex);
-                       } else {
-                           onSuccess.accept(result);
-                       }
-                    });
+            CompletableFuture<SendResult<K, V>> kafkaResultFuture = kafkaTemplate.send(topic, key, message);
+            kafkaResultFuture.whenComplete(callback);
         }catch (KafkaException e){
             log.error("Error on kafka producer with key: {}, message: {}, and exception: {}", key, message, e.getMessage());
             throw new KafkaProducerException("Error on kafka producer with key: " + key + " message: " + message);
