@@ -23,6 +23,7 @@
         <spring-kafka.version>4.1.0</spring-kafka.version>
         <kafka-avro-serializer>8.3.0</kafka-avro-serializer>
         <avro.version>1.12.1</avro.version>
+        <spring-ai.version>2.0.0</spring-ai.version>
     </properties>
 
     <packaging>pom</packaging>
@@ -70,6 +71,11 @@
             <dependency>
                 <groupId>com.food.ordering.system</groupId>
                 <artifactId>order-messaging</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.food.ordering.system</groupId>
+                <artifactId>order-ai</artifactId>
                 <version>${project.version}</version>
             </dependency>
             <dependency>

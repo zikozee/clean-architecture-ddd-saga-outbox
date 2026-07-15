@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
                 .build();
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(ValidationException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorDTO handleException(ValidationException validationException){
         log.error(validationException.getMessage(), validationException);
