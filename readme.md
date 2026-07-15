@@ -19,3 +19,6 @@
 3. notice that in DDD concept we have created a domain-service to drive the business logic in the domain core module
    - this can be likened to the uses cases in clean architecture
  
+
+# check event in kafka topic
+kcat -C -b localhost:19092 -t payment-request
