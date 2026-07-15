@@ -30,7 +30,7 @@ public class AIOrderNoteInterpreter implements OrderNoteInterpreter {
     private final int maxAttempts;
 
 
-    public AIOrderNoteInterpreter(@Qualifier("openAIChatClient") ChatClient chatClient,
+    public AIOrderNoteInterpreter(@Qualifier("orderNoteInterpreterChatClient") ChatClient chatClient,
                                   @Value("classpath:/templates/order-interpreter-prompt.st") Resource orderNoteInterpreterPrompt,
                                   @Value("classpath:/templates/order-system-prompt.st") Resource orderSystemPrompt,
                                   @Value("${order.ai.interpreter.max-attempts}") int maxAttempts) {

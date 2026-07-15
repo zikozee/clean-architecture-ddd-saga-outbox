@@ -5,6 +5,7 @@ server:
 logging:
   level:
     com.food.ordering.system: DEBUG
+    org.springframework.ai.chat.client.advisor.SimpleLoggerAdvisor: DEBUG
 
 
 order-service:
@@ -46,15 +47,23 @@ spring:
       mode: always
   ai:
     openai:
-      api-key: ${OPEN_API_KEY}
-      # as env in system or ide
+      api-key: #${OPEN_API_KEY} #dummy
+      # though compatible ollama, add append /v1 to the base-url to enable it work
+#      base-url: http://localhost:11434
       chat:
-        model: gpt-4.1-mini
+        model: gpt-4.1-mini #mistral:7b
         temperature: 0.7
         max-tokens: 500
+    ollama:
+      base-url: http://localhost:11434
+      chat:
+        model: mistral:7b
+        max-new-tokens: 512
+        temperature: 0.7
 
 order:
   ai:
+    provider: openai
     interpreter:
       max-attempts: 3
 
