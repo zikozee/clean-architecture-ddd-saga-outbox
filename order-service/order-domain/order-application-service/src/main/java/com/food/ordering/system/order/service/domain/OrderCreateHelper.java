@@ -9,6 +9,7 @@ import com.food.ordering.system.order.service.domain.event.OrderCreatedEvent;
 import com.food.ordering.system.order.service.domain.exception.OrderDomainException;
 import com.food.ordering.system.order.service.domain.mapper.OrderDataMapper;
 import com.food.ordering.system.order.service.domain.ports.output.ai.order.noteinterpreter.OrderNoteInterpreter;
+import com.food.ordering.system.order.service.domain.ports.output.message.publisher.payment.OrderCreatedPaymentRequestMessagePublisher;
 import com.food.ordering.system.order.service.domain.ports.output.repository.CustomerRepository;
 import com.food.ordering.system.order.service.domain.ports.output.repository.OrderRepository;
 import com.food.ordering.system.order.service.domain.ports.output.repository.RestaurantRepository;
@@ -37,6 +38,7 @@ public class OrderCreateHelper {
     private final RestaurantRepository restaurantRepository;
     private final OrderDataMapper orderDataMapper;
     private final OrderNoteInterpreter orderNoteInterpreter;
+    private final OrderCreatedPaymentRequestMessagePublisher orderCreatedEventDomainEventPublisher;
 
 
     @Transactional
@@ -47,7 +49,8 @@ public class OrderCreateHelper {
 
         updateOrderPreferences(createOrderCommand, order);
 
-        OrderCreatedEvent orderCreatedEvent = orderDomainService.validateAndInitiateOrder(order, restaurant);
+        OrderCreatedEvent orderCreatedEvent = orderDomainService.validateAndInitiateOrder(order, restaurant,
+                orderCreatedEventDomainEventPublisher);
         saveOrder(order);
         log.info("Order is created with id {} ", orderCreatedEvent.getOrder().getId().getValue());
         return orderCreatedEvent;
