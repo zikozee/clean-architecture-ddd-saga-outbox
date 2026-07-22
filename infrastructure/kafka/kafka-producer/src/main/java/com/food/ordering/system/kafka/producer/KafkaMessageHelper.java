@@ -1,4 +1,4 @@
-package com.food.ordering.system.order.service.messaging.publisher.kafka;
+package com.food.ordering.system.kafka.producer;
 
 
 import lombok.extern.slf4j.Slf4j;
@@ -15,9 +15,9 @@ import java.util.function.BiConsumer;
 
 @Slf4j
 @Component
-public class OrderKafkaMessageHelper {
+public class KafkaMessageHelper {
 
-    public <T, U> BiConsumer<SendResult<String, T>, Throwable> getKafkaCallBack(String responseTopicName, String orderId, T requestAvroModel, String requestAvroModelName) {
+    public <T, U> BiConsumer<SendResult<String, T>, Throwable> getKafkaCallBack(String responseTopicName, String orderId, T avroModel, String avroModelName) {
 
         return (result, ex) -> {
             if (ex == null) {
@@ -30,7 +30,7 @@ public class OrderKafkaMessageHelper {
                         metadata.timestamp()
                 );
             }else {
-                log.error("Error while sending {} message {} to topic {}", requestAvroModelName, requestAvroModel.toString(), responseTopicName, ex);
+                log.error("Error while sending {} message {} to topic {}", avroModelName, avroModel.toString(), responseTopicName, ex);
             }
         };
     }

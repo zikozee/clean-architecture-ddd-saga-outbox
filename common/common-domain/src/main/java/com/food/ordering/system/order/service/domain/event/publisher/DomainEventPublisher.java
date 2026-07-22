@@ -8,6 +8,6 @@ import com.food.ordering.system.order.service.domain.event.DomainEvent;
  * @date : 28 Jun, 2026
  */
 
-public interface DomainEventPublisher<T extends DomainEvent> {
+public interface DomainEventPublisher<T extends DomainEvent<?>> {
     void  publish(T domainEvent);
 }
