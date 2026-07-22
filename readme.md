@@ -22,3 +22,11 @@
 
 # check event in kafka topic
 kcat -C -b localhost:19092 -t payment-request
+
+
+# FLOW
+- order -><- payment
+- don't be fooled by the kafka topic name expression check the value for
+    - order publisher --> payment listener
+    - payment publisher --> order listener
+- for testing sake if you check the init-data.sql, the  customer id used in payment-container was the same inserted for order-container
