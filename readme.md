@@ -26,6 +26,8 @@ kcat -C -b localhost:19092 -t payment-request
 
 # FLOW
 - order -><- payment
+- order -><- restaurant (to complete payment) 
+- i.e **order service** to **payment service** when payment is completed, then order is sent to **restaurant service** for completion
 - don't be fooled by the kafka topic name expression check the value for
     - order publisher --> payment listener
     - payment publisher --> order listener

@@ -11,8 +11,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * @date : 05 Jul, 2026
  */
 
-@EnableJpaRepositories(basePackages = "com.food.ordering.system.order.service.dataaccess") // to scan jpa repositories
-@EntityScan(basePackages = "com.food.ordering.system.order.service.dataaccess") // to locate the jpa entities
+@EnableJpaRepositories(basePackages = {"com.food.ordering.system.order.service.dataaccess", "com.food.ordering.system.dataaccess"}) // to scan jpa repositories
+@EntityScan(basePackages = {"com.food.ordering.system.order.service.dataaccess", "com.food.ordering.system.dataaccess"}) // to locate the jpa entities
 @SpringBootApplication(scanBasePackages = "com.food.ordering.system")
 public class OrderServiceApplication {
 
