@@ -39,7 +39,7 @@ public class PaymentCancelledKafkaPublisher implements PaymentCancelledMessagePu
 
             kafkaProducer.send(paymentServiceConfigData.getPaymentResponseTopicName(), orderId,
                     paymentResponseAvroModel,
-                    kafkaMessageHelper.getKafkaCallBack(paymentServiceConfigData.getPaymentResponseTopicName(), orderId,
+                    kafkaMessageHelper.getKafkaCallback(paymentServiceConfigData.getPaymentResponseTopicName(), orderId,
                             paymentResponseAvroModel, "paymentResponseAvroModel")
             );
 
