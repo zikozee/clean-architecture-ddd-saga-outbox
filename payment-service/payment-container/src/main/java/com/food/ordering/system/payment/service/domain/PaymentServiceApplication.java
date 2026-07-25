@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
  * @date : 22 Jul, 2026
  */
 
-@EnableJpaRepositories(basePackages = "com.food.ordering.system.payment.service.dataaccess.*.repository")
+@EnableJpaRepositories(basePackages = "com.food.ordering.system.payment.service.dataaccess")
 @EntityScan(basePackages = "com.food.ordering.system.payment.service.dataaccess")
 @SpringBootApplication(scanBasePackages = "com.food.ordering.system")
 public class PaymentServiceApplication {

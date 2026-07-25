@@ -16,5 +16,43 @@
     </properties>
 
     <dependencies>
+        <!-- already contains the restaurant-application-service which contains the restaurant-domain-core
+            also no need to add the spring-boot-starter as  the transitive dependency already contains it
+        -->
+
+        <dependency>
+            <groupId>com.food.ordering.system</groupId>
+            <artifactId>restaurant-dataaccess</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.food.ordering.system</groupId>
+            <artifactId>restaurant-messaging</artifactId>
+        </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <imageName>${project.groupId}/restaurant.service:${project.version}</imageName>
+                    <excludes>
+                        <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                        </exclude>
+                    </excludes>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>install</phase>
+                        <goals>
+                            <goal>build-image</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
