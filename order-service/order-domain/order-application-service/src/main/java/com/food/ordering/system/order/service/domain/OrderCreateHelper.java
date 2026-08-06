@@ -97,7 +97,7 @@ public class OrderCreateHelper {
             log.error("could not save order!");
             throw new OrderDomainException("Could not save order!");
         }
-        log.info("Order with id {} saved successfully", savedOrder.getId());
+        log.info("Order with id {} saved successfully", savedOrder.getId().getValue());
         return order;
     }
 }

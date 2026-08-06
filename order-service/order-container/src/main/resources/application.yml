@@ -47,7 +47,7 @@ spring:
       mode: always
   ai:
     openai:
-      api-key: #${OPEN_API_KEY} #dummy
+      api-key: ${OPEN_API_KEY} #dummy
       # though compatible ollama, add append /v1 to the base-url to enable it work
 #      base-url: http://localhost:11434
       chat:
@@ -62,7 +62,7 @@ spring:
 
 order:
   ai:
-    provider: openai
+    provider: ollama
     interpreter:
       max-attempts: 3
 

@@ -16,6 +16,10 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>com.food.ordering.system</groupId>
+            <artifactId>saga</artifactId>
+        </dependency>
         <!-- version inferred from the base dependencyManagement (see order-application-service dependencies in top right hand corner)-->
         <dependency>
             <groupId>com.food.ordering.system</groupId>

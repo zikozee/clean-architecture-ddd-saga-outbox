@@ -80,6 +80,7 @@ public class Order extends AggregateRoot<OrderId> {
 
     private void updateFailureMessages(List<String> failureMessages) {
         if (this.failureMessages != null && failureMessages != null) {
+            this.failureMessages = new ArrayList<>(failureMessages);
             this.failureMessages.addAll(failureMessages.stream().filter(message -> !message.isEmpty()).toList());
         }
         if(this.failureMessages == null) {

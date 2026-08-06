@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static com.food.ordering.system.order.service.domain.entity.Order.FAILURE_MESSAGES_DELIMITER;
@@ -56,8 +57,8 @@ public class OrderDataAccessMapper {
                 .orderStatus(orderEntity.getOrderStatus())
                 .orderPreferences(orderEntity.getOrderPreferences())
                 .failureMessages(orderEntity.getFailureMessages() != null
-                        ? new ArrayList<>(Arrays.asList(orderEntity.getFailureMessages().split(FAILURE_MESSAGES_DELIMITER)))
-                        : new ArrayList<>())
+                        ? (!orderEntity.getFailureMessages().isBlank() ? Arrays.asList(orderEntity.getFailureMessages().split(FAILURE_MESSAGES_DELIMITER)) : Collections.emptyList())
+                        : Collections.emptyList())
                 .build();
 
     }

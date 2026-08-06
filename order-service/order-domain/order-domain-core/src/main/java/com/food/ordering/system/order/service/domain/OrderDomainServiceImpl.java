@@ -61,10 +61,10 @@ public class OrderDomainServiceImpl implements OrderDomainService{
         return new OrderCancelledEvent(order, ZonedDateTime.now(ZoneId.of(UTC)), orderCancelledEventDomainEventPublisher);
     }
 
-    // not i return nothing(no event) as it's the final step in the process
+    // note i return nothing(no event) as it's the final step in the process
     @Override
     public void cancelOrder(Order order, List<String> failureMessages) {
-        order.initCancel(failureMessages);
+        order.cancel(failureMessages);
         log.info("Order with id: {} is cancelled", order.getId().getValue());
     }
 

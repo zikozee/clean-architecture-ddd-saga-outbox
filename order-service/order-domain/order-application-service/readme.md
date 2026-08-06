@@ -42,3 +42,6 @@ remember this is how clients or order services talk to the domain via the applic
 - is this version we rely on spring proxying by creating the OrderCreateHelper 
 - such that we mark the persistOrder in OrderCreateHelper as @Transactional so that we call it from the OrderCreateCommandHandler
 - to be sure the proxying will trigger the @Transactional and when done we can then publish the orderCreateEvent
+
+# we are creating all Saga Step here ?
+- because the order service is the coordinator (for the whole flow)

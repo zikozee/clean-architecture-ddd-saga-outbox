@@ -68,7 +68,8 @@
                 "items":{
                   "type":"string"
                }
-            }
+            },
+            "default": []
         }
     ]
 }

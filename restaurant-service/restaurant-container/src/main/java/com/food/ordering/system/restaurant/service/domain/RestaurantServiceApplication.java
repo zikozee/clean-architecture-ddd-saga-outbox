@@ -5,12 +5,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.persistence.autoconfigure.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.kafka.annotation.EnableKafka;
 
 /**
  * @dev : Ezekiel Eromosei
  * @date : 25 Jul, 2026
  */
 
+@EnableKafka
 @EnableJpaRepositories(basePackages = {"com.food.ordering.system.restaurant.service.dataaccess", "com.food.ordering.system.dataaccess"})
 @EntityScan(basePackages = {"com.food.ordering.system.restaurant.service.dataaccess", "com.food.ordering.system.dataaccess"})
 @SpringBootApplication(scanBasePackages = {"com.food.ordering.system"})
