@@ -20,6 +20,10 @@
             <groupId>com.food.ordering.system</groupId>
             <artifactId>saga</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.food.ordering.system</groupId>
+            <artifactId>outbox</artifactId>
+        </dependency>
         <!-- version inferred from the base dependencyManagement (see order-application-service dependencies in top right hand corner)-->
         <dependency>
             <groupId>com.food.ordering.system</groupId>
@@ -34,13 +38,18 @@
             <artifactId>spring-tx</artifactId>
         </dependency>
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-json</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
+            <artifactId>spring-boot-starter-webmvc-test</artifactId>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 </project>

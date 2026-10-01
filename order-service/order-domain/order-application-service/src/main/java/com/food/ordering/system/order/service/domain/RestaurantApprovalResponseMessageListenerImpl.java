@@ -2,7 +2,6 @@ package com.food.ordering.system.order.service.domain;
 
 
 import com.food.ordering.system.order.service.domain.dto.message.RestaurantApprovedResponse;
-import com.food.ordering.system.order.service.domain.event.OrderCancelledEvent;
 import com.food.ordering.system.order.service.domain.ports.input.message.listener.restaurantapproval.RestaurantApprovalResponseMessageListener;
 import com.food.ordering.system.order.service.domain.sagatrigger.OrderApprovalSaga;
 import lombok.RequiredArgsConstructor;
@@ -33,9 +32,8 @@ public class RestaurantApprovalResponseMessageListenerImpl implements Restaurant
 
     @Override
     public void orderRejected(RestaurantApprovedResponse restaurantApprovedResponse) {
-        OrderCancelledEvent domainEvent = orderApprovalSaga.rollback(restaurantApprovedResponse);
-        log.info("Publishing order cancelled event for order id: {} with failure messages: {}",
+        orderApprovalSaga.rollback(restaurantApprovedResponse);
+        log.info("Order Approval Saga rollback operation is completed for order id: {} with failure messages: {}",
                 restaurantApprovedResponse.getOrderId(), String.join(FAILURE_MESSAGES_DELIMITER, restaurantApprovedResponse.getFailureMessages()));
-        domainEvent.fire();
     }
 }

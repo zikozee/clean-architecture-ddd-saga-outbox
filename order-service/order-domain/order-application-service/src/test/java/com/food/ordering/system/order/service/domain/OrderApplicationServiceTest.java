@@ -11,24 +11,33 @@ import com.food.ordering.system.order.service.domain.entity.Product;
 import com.food.ordering.system.order.service.domain.entity.Restaurant;
 import com.food.ordering.system.order.service.domain.exception.OrderDomainException;
 import com.food.ordering.system.order.service.domain.mapper.OrderDataMapper;
+import com.food.ordering.system.order.service.domain.outbox.model.payment.OrderPaymentEventPayload;
+import com.food.ordering.system.order.service.domain.outbox.model.payment.OrderPaymentOutboxMessage;
 import com.food.ordering.system.order.service.domain.ports.input.service.OrderApplicationService;
 import com.food.ordering.system.order.service.domain.ports.output.ai.order.noteinterpreter.OrderNoteInterpreter;
 import com.food.ordering.system.order.service.domain.ports.output.repository.CustomerRepository;
 import com.food.ordering.system.order.service.domain.ports.output.repository.OrderRepository;
+import com.food.ordering.system.order.service.domain.ports.output.repository.PaymentOutboxRepository;
 import com.food.ordering.system.order.service.domain.ports.output.repository.RestaurantRepository;
 import com.food.ordering.system.order.service.domain.valueobject.*;
+import com.food.ordering.system.outbox.OutboxStatus;
+import com.food.ordering.system.saga.SagaStatus;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import tools.jackson.core.JacksonException;
+import tools.jackson.databind.ObjectMapper;
 
 import java.math.BigDecimal;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import static com.food.ordering.system.saga.order.SagaConstants.ORDER_SAGA_NAME;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -60,6 +69,12 @@ class OrderApplicationServiceTest {
     @Autowired
     private OrderNoteInterpreter orderNoteInterpreter;
 
+    @Autowired
+    private PaymentOutboxRepository paymentOutboxRepository;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
     private CreateOrderCommand createOrderCommand;
     private CreateOrderCommand createOrderCommandWrongPrice;
     private CreateOrderCommand createOrderCommandWrongProductPrice;
@@ -68,6 +83,7 @@ class OrderApplicationServiceTest {
     private static final UUID PRODUCT_ID = UUID.fromString("c44469f1-76d3-4d2d-b452-3346f49a4e17");
     private static final UUID PRODUCT_ID_2 = UUID.fromString("4b060564-aec2-4a19-b4c1-a637e5d26f87");
     private static final UUID ORDER_ID = UUID.fromString("a6e9ac84-05d2-4fec-84b5-fe08abac35f4");
+    private static final UUID SAGA_ID = UUID.fromString("a6e9ac84-05d2-4fec-84b5-fe08abac35f4");
     private static final BigDecimal PRICE = new BigDecimal("200.00");
 
 
@@ -180,6 +196,7 @@ class OrderApplicationServiceTest {
         when(orderRepository.save(any(Order.class))).thenReturn(order);
 
         when(orderNoteInterpreter.interpret(orderNotes)).thenReturn(orderPreferences);
+        when(paymentOutboxRepository.save(any(OrderPaymentOutboxMessage.class))).thenReturn(getOrderPaymentOutboxMessage());
     }
 
     @Test
@@ -219,5 +236,35 @@ class OrderApplicationServiceTest {
         OrderDomainException orderDomainException = Assertions.assertThrows(OrderDomainException.class, () -> orderApplicationService.createOrder(createOrderCommand));
         Assertions.assertEquals("Restaurant with id " + RESTAURANT_ID + " is currently not active!", orderDomainException.getMessage());
 
+    }
+
+    private OrderPaymentOutboxMessage getOrderPaymentOutboxMessage(){
+        OrderPaymentEventPayload orderPaymentEventPayload = OrderPaymentEventPayload.builder()
+                .orderId(ORDER_ID.toString())
+                .customerId(CUSTOMER_ID.toString())
+                .price(PRICE)
+                .createdAt(ZonedDateTime.now())
+                .paymentOrderStatus(PaymentOrderStatus.PENDING.name())
+                .build();
+
+        return OrderPaymentOutboxMessage.builder()
+                .id(UUID.randomUUID())
+                .sagaId(SAGA_ID)
+                .createdAt(ZonedDateTime.now())
+                .type(ORDER_SAGA_NAME)
+                .payload(createPayload(orderPaymentEventPayload))
+                .orderStatus(OrderStatus.PENDING)
+                .sagaStatus(SagaStatus.STARTED)
+                .outboxStatus(OutboxStatus.STARTED)
+                .version(0)
+                .build();
+    }
+
+    private String createPayload(OrderPaymentEventPayload orderPaymentEventPayload){
+        try {
+            return objectMapper.writeValueAsString(orderPaymentEventPayload);
+        }catch (JacksonException je){
+            throw new OrderDomainException("Cannot create OrderPaymentEventPayload object!");
+        }
     }
 }
