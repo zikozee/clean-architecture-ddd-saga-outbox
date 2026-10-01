@@ -1,7 +1,7 @@
 package com.food.ordering.system.order.service.domain;
 
 
-import com.food.ordering.system.order.service.domain.dto.message.RestaurantApprovedResponse;
+import com.food.ordering.system.order.service.domain.dto.message.RestaurantApprovalResponse;
 import com.food.ordering.system.order.service.domain.ports.input.message.listener.restaurantapproval.RestaurantApprovalResponseMessageListener;
 import com.food.ordering.system.order.service.domain.sagatrigger.OrderApprovalSaga;
 import lombok.RequiredArgsConstructor;
@@ -25,15 +25,16 @@ public class RestaurantApprovalResponseMessageListenerImpl implements Restaurant
     private final OrderApprovalSaga orderApprovalSaga;
 
     @Override
-    public void orderApproved(RestaurantApprovedResponse restaurantApprovedResponse) {
-        orderApprovalSaga.process(restaurantApprovedResponse);
-        log.info("Order is approved with order id: {}", restaurantApprovedResponse.getOrderId());
+    public void orderApproved(RestaurantApprovalResponse restaurantApprovalResponse) {
+        orderApprovalSaga.process(restaurantApprovalResponse);
+        log.info("Order is approved for order id: {}", restaurantApprovalResponse.getOrderId());
     }
 
     @Override
-    public void orderRejected(RestaurantApprovedResponse restaurantApprovedResponse) {
-        orderApprovalSaga.rollback(restaurantApprovedResponse);
-        log.info("Order Approval Saga rollback operation is completed for order id: {} with failure messages: {}",
-                restaurantApprovedResponse.getOrderId(), String.join(FAILURE_MESSAGES_DELIMITER, restaurantApprovedResponse.getFailureMessages()));
+    public void orderRejected(RestaurantApprovalResponse restaurantApprovalResponse) {
+          orderApprovalSaga.rollback(restaurantApprovalResponse);
+          log.info("Order Approval Saga rollback operation is completed for order id: {} with failure messages: {}",
+                  restaurantApprovalResponse.getOrderId(),
+                  String.join(FAILURE_MESSAGES_DELIMITER, restaurantApprovalResponse.getFailureMessages()));
     }
 }

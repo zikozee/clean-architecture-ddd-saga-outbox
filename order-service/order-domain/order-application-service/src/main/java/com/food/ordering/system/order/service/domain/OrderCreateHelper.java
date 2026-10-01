@@ -82,19 +82,19 @@ public class OrderCreateHelper {
 
     private void checkCustomer(UUID customerId) {
         Optional<Customer> customer = customerRepository.findCustomer(customerId);
-        if (customer.isEmpty()){
-            log.warn("Customer with id {} not found", customerId);
-            throw new OrderDomainException("Customer with id " + customerId + " not found");
+        if (customer.isEmpty()) {
+            log.warn("Could not find customer with customer id: {}", customerId);
+            throw new OrderDomainException("Could not find customer with customer id: " + customer);
         }
     }
 
     private Order saveOrder(Order order) {
-        Order savedOrder = orderRepository.save(order);
-        if(savedOrder == null) {
-            log.error("could not save order!");
+        Order orderResult = orderRepository.save(order);
+        if (orderResult == null) {
+            log.error("Could not save order!");
             throw new OrderDomainException("Could not save order!");
         }
-        log.info("Order with id {} saved successfully", savedOrder.getId().getValue());
-        return order;
+        log.info("Order is saved with id: {}", orderResult.getId().getValue());
+        return orderResult;
     }
 }

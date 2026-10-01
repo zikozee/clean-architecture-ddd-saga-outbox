@@ -5,7 +5,6 @@ import com.food.ordering.system.outbox.OutboxStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 import java.time.ZonedDateTime;
 import java.util.UUID;
@@ -20,8 +19,11 @@ public class OrderOutboxMessage {
     private ZonedDateTime processedAt;
     private String type;
     private String payload;
-    @Setter
     private OutboxStatus outboxStatus;
     private OrderApprovalStatus approvalStatus;
     private int version;
+
+    public void setOutboxStatus(OutboxStatus status) {
+        this.outboxStatus = status;
+    }
 }

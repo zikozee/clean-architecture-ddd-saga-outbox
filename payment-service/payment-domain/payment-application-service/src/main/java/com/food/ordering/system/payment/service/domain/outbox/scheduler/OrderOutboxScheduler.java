@@ -37,7 +37,7 @@ public class OrderOutboxScheduler implements OutboxScheduler {
 
         if(outboxMessagesResponse.isPresent() && !outboxMessagesResponse.get().isEmpty()) {
             List<OrderOutboxMessage> outboxMessages = outboxMessagesResponse.get();
-            log.info("Received {} OrderOutboxMessage with ids {}, sending to kafka!", outboxMessages.size(),
+            log.info("Received {} OrderOutboxMessage with ids {}, sending to message bus!", outboxMessages.size(),
                     outboxMessages.stream().map(outboxMessage ->
                             outboxMessage.getId().toString()).collect(Collectors.joining(",")));
 

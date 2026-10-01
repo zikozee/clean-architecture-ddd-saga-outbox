@@ -11,16 +11,12 @@ import com.food.ordering.system.restaurant.service.domain.outbox.model.OrderEven
 import org.springframework.stereotype.Component;
 
 import java.util.UUID;
-
-/**
- * @dev : Ezekiel Eromosei
- * @date : 24 Jul, 2026
- */
+import java.util.stream.Collectors;
 
 @Component
 public class RestaurantDataMapper {
-
-    public Restaurant restaurantApprovalRequestToRestaurant(RestaurantApprovalRequest restaurantApprovalRequest) {
+    public Restaurant restaurantApprovalRequestToRestaurant(RestaurantApprovalRequest
+                                                                             restaurantApprovalRequest) {
         return Restaurant.builder()
                 .restaurantId(new RestaurantId(UUID.fromString(restaurantApprovalRequest.getRestaurantId())))
                 .orderDetail(OrderDetail.builder()
@@ -37,12 +33,12 @@ public class RestaurantDataMapper {
                 .build();
     }
 
-
-    public OrderEventPayload orderApprovalEventToOrderEventPayload(OrderApprovalEvent orderApprovalEvent) {
+    public OrderEventPayload
+    orderApprovalEventToOrderEventPayload(OrderApprovalEvent orderApprovalEvent) {
         return OrderEventPayload.builder()
                 .orderId(orderApprovalEvent.getOrderApproval().getOrderId().getValue().toString())
                 .restaurantId(orderApprovalEvent.getRestaurantId().getValue().toString())
-                .orderApprovalStatus(orderApprovalEvent.getOrderApproval().getOrderApprovalStatus().name())
+                .orderApprovalStatus(orderApprovalEvent.getOrderApproval().getApprovalStatus().name())
                 .createdAt(orderApprovalEvent.getCreatedAt())
                 .failureMessages(orderApprovalEvent.getFailureMessages())
                 .build();

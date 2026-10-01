@@ -1,6 +1,5 @@
 package com.food.ordering.system.order.service.domain.outbox.model.approval;
 
-
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,16 +9,10 @@ import java.math.BigDecimal;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-/**
- * @dev : Ezekiel Eromosei
- * @date : 17 Aug, 2026
- */
-
 @Getter
 @Builder
 @AllArgsConstructor
 public class OrderApprovalEventPayload {
-
     @JsonProperty
     private String orderId;
     @JsonProperty

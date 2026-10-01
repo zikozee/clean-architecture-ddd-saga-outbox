@@ -42,21 +42,18 @@ public class RestaurantApprovalOutboxScheduler implements OutboxScheduler {
                         SagaStatus.PROCESSING
                 );
 
-        if(outboxMessagesResponse.isPresent() && !outboxMessagesResponse.isEmpty()){
+        if (outboxMessagesResponse.isPresent() && !outboxMessagesResponse.get().isEmpty()) {
             List<OrderApprovalOutboxMessage> outboxMessages = outboxMessagesResponse.get();
             log.info("Received {} OrderApprovalOutboxMessage with ids: {}, sending to message bus!",
                     outboxMessages.size(),
                     outboxMessages.stream().map(outboxMessage ->
-                                    outboxMessage.getId().toString()).collect(Collectors.joining(",")));
-
+                            outboxMessage.getId().toString()).collect(Collectors.joining(",")));
             outboxMessages.forEach(outboxMessage ->
                     restaurantApprovalRequestMessagePublisher.publish(outboxMessage, this::updateOutboxStatus));
-
             log.info("{} OrderApprovalOutboxMessage sent to message bus!", outboxMessages.size());
+
         }
-
     }
-
 
     private void updateOutboxStatus(OrderApprovalOutboxMessage orderApprovalOutboxMessage, OutboxStatus outboxStatus) {
         orderApprovalOutboxMessage.setOutboxStatus(outboxStatus);

@@ -3,7 +3,7 @@ package com.food.ordering.system.order.service.messaging.mapper;
 
 import com.food.ordering.system.kafka.order.avro.model.*;
 import com.food.ordering.system.order.service.domain.dto.message.PaymentResponse;
-import com.food.ordering.system.order.service.domain.dto.message.RestaurantApprovedResponse;
+import com.food.ordering.system.order.service.domain.dto.message.RestaurantApprovalResponse;
 import com.food.ordering.system.order.service.domain.outbox.model.approval.OrderApprovalEventPayload;
 import com.food.ordering.system.order.service.domain.outbox.model.payment.OrderPaymentEventPayload;
 import com.food.ordering.system.order.service.domain.valueobject.OrderApprovalStatus;
@@ -34,8 +34,8 @@ public class OrderMessagingDataMapper {
                 .build();
     }
 
-    public RestaurantApprovedResponse approvalResponseAvroModelToApprovalResponse(RestaurantApprovalResponseAvroModel responseAvroModel) {
-        return RestaurantApprovedResponse.builder()
+    public RestaurantApprovalResponse approvalResponseAvroModelToApprovalResponse(RestaurantApprovalResponseAvroModel responseAvroModel) {
+        return RestaurantApprovalResponse.builder()
                 .id(responseAvroModel.getId().toString())
                 .sagaId(responseAvroModel.getSagaId())
                 .restaurantId(responseAvroModel.getRestaurantId().toString())

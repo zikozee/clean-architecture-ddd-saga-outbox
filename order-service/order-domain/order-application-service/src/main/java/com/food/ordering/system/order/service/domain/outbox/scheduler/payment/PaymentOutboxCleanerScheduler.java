@@ -35,24 +35,19 @@ public class PaymentOutboxCleanerScheduler implements OutboxScheduler {
                         SagaStatus.SUCCEEDED,
                         SagaStatus.FAILED,
                         SagaStatus.COMPENSATED);
-        // note the SagaStatus are ending states
 
-        if(outboxMessagesResponse.isPresent()){
+        if (outboxMessagesResponse.isPresent()) {
             List<OrderPaymentOutboxMessage> outboxMessages = outboxMessagesResponse.get();
             log.info("Received {} OrderPaymentOutboxMessage for clean-up. The payloads: {}",
-                    outboxMessages.size(), outboxMessages.stream().map(OrderPaymentOutboxMessage::getPayload)
+                    outboxMessages.size(),
+                    outboxMessages.stream().map(OrderPaymentOutboxMessage::getPayload)
                             .collect(Collectors.joining("\n")));
-
-            //todo enhancement you could have an archive-outbox-table, such that upon delete from outbox-table,
-            // you move the data there for analyzing the system + logs
             paymentOutboxHelper.deletePaymentOutboxMessageByOutboxStatusAndSagaStatus(
                     OutboxStatus.COMPLETED,
                     SagaStatus.SUCCEEDED,
                     SagaStatus.FAILED,
                     SagaStatus.COMPENSATED);
-
             log.info("{} OrderPaymentOutboxMessage deleted!", outboxMessages.size());
-
         }
 
     }

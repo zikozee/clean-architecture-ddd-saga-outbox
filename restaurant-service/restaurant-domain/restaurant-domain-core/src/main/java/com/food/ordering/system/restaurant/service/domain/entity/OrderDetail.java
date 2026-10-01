@@ -8,11 +8,6 @@ import com.food.ordering.system.order.service.domain.valueobject.OrderStatus;
 
 import java.util.List;
 
-/**
- * @dev : Ezekiel Eromosei
- * @date : 24 Jul, 2026
- */
-
 public class OrderDetail extends BaseEntity<OrderId> {
     private OrderStatus orderStatus;
     private Money totalAmount;
@@ -28,7 +23,6 @@ public class OrderDetail extends BaseEntity<OrderId> {
     public static Builder builder() {
         return new Builder();
     }
-
 
     public OrderStatus getOrderStatus() {
         return orderStatus;

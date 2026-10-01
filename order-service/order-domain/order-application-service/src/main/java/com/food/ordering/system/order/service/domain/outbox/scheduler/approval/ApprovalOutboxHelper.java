@@ -37,10 +37,10 @@ public class ApprovalOutboxHelper {
 
     @Transactional(readOnly = true)
     public Optional<List<OrderApprovalOutboxMessage>> getApprovalOutboxMessageByOutboxStatusAndSagaStatus(
-            OutboxStatus outboxStatus, SagaStatus... sagaStatus){
-
-        return approvalOutboxRepository.findByTypeAndOutboxStatusAndSagaStatus(
-                ORDER_SAGA_NAME, outboxStatus, sagaStatus);
+            OutboxStatus outboxStatus, SagaStatus... sagaStatus) {
+        return approvalOutboxRepository.findByTypeAndOutboxStatusAndSagaStatus(ORDER_SAGA_NAME,
+                outboxStatus,
+                sagaStatus);
     }
 
     @Transactional(readOnly = true)
@@ -53,25 +53,21 @@ public class ApprovalOutboxHelper {
     @Transactional
     public void save(OrderApprovalOutboxMessage orderApprovalOutboxMessage) {
         OrderApprovalOutboxMessage response = approvalOutboxRepository.save(orderApprovalOutboxMessage);
-        if (response == null){
-            log.error("Could not save OrderApprovalOutboxMessage with outbox id: {}", orderApprovalOutboxMessage.getId());
-
-            throw new OrderDomainException("Could not save OrderApprovalOutboxMessage with outbox id:" + orderApprovalOutboxMessage.getId());
+        if (response == null) {
+            log.error("Could not save OrderApprovalOutboxMessage with outbox id: {}",
+                    orderApprovalOutboxMessage.getId());
+            throw new OrderDomainException("Could not save OrderApprovalOutboxMessage with outbox id: " +
+                    orderApprovalOutboxMessage.getId());
         }
-
         log.info("OrderApprovalOutboxMessage saved with outbox id: {}", orderApprovalOutboxMessage.getId());
     }
 
-
     @Transactional
-    public void deleteApprovalOutboxMessageByTypeAndOutboxStatusAndSagaStatus(OutboxStatus outboxStatus, SagaStatus... sagaStatus){
-        approvalOutboxRepository.deleteByTypeAndOutboxStatusAndSagaStatus(ORDER_SAGA_NAME, outboxStatus, sagaStatus);
-    }
-
-
-    @Transactional
-    public void saveApprovalOutboxMessage(OrderApprovalEventPayload orderApprovalEventPayload, OrderStatus orderStatus,
-                                          SagaStatus sagaStatus, OutboxStatus outboxStatus, UUID sagaId) {
+    public void saveApprovalOutboxMessage(OrderApprovalEventPayload orderApprovalEventPayload,
+                                          OrderStatus orderStatus,
+                                          SagaStatus sagaStatus,
+                                          OutboxStatus outboxStatus,
+                                          UUID sagaId) {
         save(OrderApprovalOutboxMessage.builder()
                 .id(UUID.randomUUID())
                 .sagaId(sagaId)
@@ -84,12 +80,20 @@ public class ApprovalOutboxHelper {
                 .build());
     }
 
+    @Transactional
+    public void deleteApprovalOutboxMessageByOutboxStatusAndSagaStatus(OutboxStatus outboxStatus,
+                                                                       SagaStatus... sagaStatus) {
+        approvalOutboxRepository.deleteByTypeAndOutboxStatusAndSagaStatus(ORDER_SAGA_NAME, outboxStatus, sagaStatus);
+    }
+
     private String createPayload(OrderApprovalEventPayload orderApprovalEventPayload) {
         try {
             return objectMapper.writeValueAsString(orderApprovalEventPayload);
-        }catch (JacksonException ex){
-            log.error("Could not create OrderApprovalEventPayload for order id: {}", orderApprovalEventPayload.getOrderId(), ex);
-            throw new OrderDomainException("Could not create OrderApprovalEventPayload for order id:" + orderApprovalEventPayload.getOrderId());
+        } catch (JacksonException e) {
+            log.error("Could not create OrderApprovalEventPayload for order id: {}",
+                    orderApprovalEventPayload.getOrderId(), e);
+            throw new OrderDomainException("Could not create OrderApprovalEventPayload for order id: " +
+                    orderApprovalEventPayload.getOrderId(), e);
         }
     }
 }

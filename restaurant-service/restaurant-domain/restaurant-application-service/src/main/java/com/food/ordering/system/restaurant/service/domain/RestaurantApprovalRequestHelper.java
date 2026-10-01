@@ -53,12 +53,14 @@ public class RestaurantApprovalRequestHelper {
         List<String> failureMessages = new ArrayList<>();
         Restaurant restaurant = findRestaurant(restaurantApprovalRequest);
         OrderApprovalEvent orderApprovalEvent =
-                restaurantDomainService.validateOrder(restaurant, failureMessages);
+                restaurantDomainService.validateOrder(
+                        restaurant,
+                        failureMessages);
         orderApprovalRepository.save(restaurant.getOrderApproval());
 
         orderOutboxHelper
                 .saveOrderOutboxMessage(restaurantDataMapper.orderApprovalEventToOrderEventPayload(orderApprovalEvent),
-                        orderApprovalEvent.getOrderApproval().getOrderApprovalStatus(),
+                        orderApprovalEvent.getOrderApproval().getApprovalStatus(),
                         OutboxStatus.STARTED,
                         UUID.fromString(restaurantApprovalRequest.getSagaId()));
     }
@@ -85,8 +87,6 @@ public class RestaurantApprovalRequestHelper {
 
         return restaurant;
     }
-
-
 
     private boolean publishIfOutboxMessageProcessed(RestaurantApprovalRequest restaurantApprovalRequest) {
         Optional<OrderOutboxMessage> orderOutboxMessage =

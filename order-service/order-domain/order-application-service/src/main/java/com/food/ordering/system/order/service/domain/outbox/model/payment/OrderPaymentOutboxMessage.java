@@ -12,11 +12,6 @@ import lombok.Setter;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
-/**
- * @dev : Ezekiel Eromosei
- * @date : 17 Aug, 2026
- */
-
 @Getter
 @Builder
 @AllArgsConstructor

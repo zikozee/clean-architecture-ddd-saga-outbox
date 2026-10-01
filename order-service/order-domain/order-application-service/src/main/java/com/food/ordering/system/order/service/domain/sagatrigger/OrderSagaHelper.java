@@ -22,6 +22,7 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 public class OrderSagaHelper {
+
     private final OrderRepository orderRepository;
 
     public Order findOrder(String orderId) {
@@ -42,7 +43,7 @@ public class OrderSagaHelper {
             case APPROVED -> SagaStatus.SUCCEEDED;
             case CANCELLING -> SagaStatus.COMPENSATING;
             case CANCELLED -> SagaStatus.COMPENSATED;
-            case PENDING -> SagaStatus.STARTED;
+            default -> SagaStatus.STARTED;
         };
     }
 }
