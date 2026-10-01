@@ -36,4 +36,4 @@ build/
 .DS_Store
 
 ### MY EXCLUSIONS ###
-docker-compose.yml
+infrastructure/postgres-co,pose.yml/docker-compose.yml

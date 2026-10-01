@@ -3,6 +3,18 @@
 - run mvn clean install 
   - to validate no dependency issue
 
+
+## start kafka n database
+cd infrastructure/docker-compose/
+
+- docker-compose -f common.yml -f kafka-cluster.yml up
+- check http://localhost:9000
+
+- docker-compose -f postgres-compose.yml up
+
+### check event in kafka topic
+kcat -C -b localhost:19092 -t payment-request
+
 ## VISUALIZING ARCHITECTURE OF PROJECT
 - visualize project/service structure with Graphviz 
   - installation instruction from - https://graphviz.org/
@@ -20,8 +32,7 @@
    - this can be likened to the uses cases in clean architecture
  
 
-# check event in kafka topic
-kcat -C -b localhost:19092 -t payment-request
+
 
 
 # FLOW
