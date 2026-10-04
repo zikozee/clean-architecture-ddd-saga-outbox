@@ -13,6 +13,7 @@ order-service:
   payment-response-topic-name: payment-response
   restaurant-approval-request-topic-name: restaurant-approval-request
   restaurant-approval-response-topic-name: restaurant-approval-response
+  customer-topic-name: customer
   # in prod should not be more than 2000(2s)
   outbox-scheduler-fixed-rate: 10000
   outbox-scheduler-initial-delay: 10000
@@ -128,6 +129,7 @@ kafka-consumer-config:
   # if the id is random, when you restart, all consumers will read from beginning hence not preferred
   payment-consumer-group-id: payment-topic-consumer
   restaurant-approval-consumer-group-id: restaurant-approval-topic-consumer
+  customer-group-id: customer-topic-consumer
   # it helps to read from the beginning of the partition: preferred behaviour
   auto-offset-reset: earliest
   # this is necessary since we are using Avro data type, the value has to be true
