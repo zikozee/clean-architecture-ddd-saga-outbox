@@ -13,7 +13,7 @@ import com.food.ordering.system.order.service.domain.valueobject.ProductId;
 public class Product extends BaseEntity<ProductId> {
     private String name;
     private Money price;
-    private int quantity;
+    private final int quantity;
     private boolean available;
 
     public void updateWithConfirmedNamePriceAndAvailability(String name, Money price, boolean available){

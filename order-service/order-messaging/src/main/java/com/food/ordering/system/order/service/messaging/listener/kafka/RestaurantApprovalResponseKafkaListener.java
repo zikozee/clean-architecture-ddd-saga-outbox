@@ -4,10 +4,12 @@ package com.food.ordering.system.order.service.messaging.listener.kafka;
 import com.food.ordering.system.kafka.consumer.KafkaConsumer;
 import com.food.ordering.system.kafka.order.avro.model.OrderApprovalStatus;
 import com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalResponseAvroModel;
+import com.food.ordering.system.order.service.domain.exception.OrderNotFoundException;
 import com.food.ordering.system.order.service.domain.ports.input.message.listener.restaurantapproval.RestaurantApprovalResponseMessageListener;
 import com.food.ordering.system.order.service.messaging.mapper.OrderMessagingDataMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
@@ -39,24 +41,34 @@ public class RestaurantApprovalResponseKafkaListener implements KafkaConsumer<Re
                         @Header(KafkaHeaders.RECEIVED_PARTITION) List<Integer> partitions,
                         @Header(KafkaHeaders.OFFSET) List<Long> offsets) {
 
-        log.info("{} number of payment responses received with keys: {}, partitions: {} and offsets: {}",
+        log.info("{} number of restaurant approval responses received with keys: {}, partitions: {} and offsets: {}",
                 messages.size(), keys.toString(), partitions.toString(), offsets.toString());
 
         messages.forEach(responseAvroModel -> {
-            if(OrderApprovalStatus.APPROVED == responseAvroModel.getOrderApprovalStatus()) {
-                log.info("Processing approved order for order id: {}", responseAvroModel.getOrderId());
-                restaurantApprovalResponseMessageListener.orderApproved(
-                        orderMessagingDataMapper.approvalResponseAvroModelToApprovalResponse(responseAvroModel)
-                );
-            } else if (OrderApprovalStatus.REJECTED == responseAvroModel.getOrderApprovalStatus()) {
+            try {
+                if(OrderApprovalStatus.APPROVED == responseAvroModel.getOrderApprovalStatus()) {
+                    log.info("Processing approved order for order id: {}", responseAvroModel.getOrderId());
+                    restaurantApprovalResponseMessageListener.orderApproved(
+                            orderMessagingDataMapper.approvalResponseAvroModelToApprovalResponse(responseAvroModel)
+                    );
+                } else if (OrderApprovalStatus.REJECTED == responseAvroModel.getOrderApprovalStatus()) {
 
-                log.info("Processing rejected order for order id: {}, with failure messages : {}",
-                        responseAvroModel.getOrderId(), String.join(FAILURE_MESSAGES_DELIMITER, responseAvroModel.getFailureMessages()));
+                    log.info("Processing rejected order for order id: {}, with failure messages : {}",
+                            responseAvroModel.getOrderId(), String.join(FAILURE_MESSAGES_DELIMITER, responseAvroModel.getFailureMessages()));
 
-                restaurantApprovalResponseMessageListener.orderRejected(
-                        orderMessagingDataMapper.approvalResponseAvroModelToApprovalResponse(responseAvroModel)
-                );
+                    restaurantApprovalResponseMessageListener.orderRejected(
+                            orderMessagingDataMapper.approvalResponseAvroModelToApprovalResponse(responseAvroModel)
+                    );
+                }
+            } catch (OptimisticLockingFailureException e){
+                // for optimistic lock. This means another thread already completed the work, do not throw error to prevent
+                // reading from kafka again!
+                log.error("Caught optimistic lock exception in RestaurantApprovalResponseKafkaListener for order id: {}",
+                        responseAvroModel.getOrderId());
+            } catch (OrderNotFoundException e){
+                log.error("No order found for order id: {}", responseAvroModel.getOrderId());
             }
+
         });
     }
 }

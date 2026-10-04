@@ -1,12 +1,10 @@
 package com.food.ordering.system.payment.service.domain.event;
 
 
-import com.food.ordering.system.order.service.domain.event.publisher.DomainEventPublisher;
 import com.food.ordering.system.payment.service.domain.entity.Payment;
 
 import java.time.ZonedDateTime;
 import java.util.Collections;
-import java.util.List;
 
 /**
  * @dev : Ezekiel Eromosei
@@ -14,16 +12,9 @@ import java.util.List;
  */
 
 public class PaymentCancelledEvent extends PaymentEvent{
-    private final DomainEventPublisher<PaymentCancelledEvent> paymentCancelledEventDomainEventPublisher;
 
-    public PaymentCancelledEvent(Payment payment, ZonedDateTime createAt,
-                                 DomainEventPublisher<PaymentCancelledEvent> paymentCancelledEventDomainEventPublisher) {
+    public PaymentCancelledEvent(Payment payment, ZonedDateTime createAt) {
         super(payment, createAt, Collections.emptyList());
-        this.paymentCancelledEventDomainEventPublisher = paymentCancelledEventDomainEventPublisher;
     }
 
-    @Override
-    public void fire() {
-        paymentCancelledEventDomainEventPublisher.publish(this);
-    }
 }

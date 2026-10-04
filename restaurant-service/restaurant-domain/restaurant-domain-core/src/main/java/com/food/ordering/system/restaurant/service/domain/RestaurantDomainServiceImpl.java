@@ -1,7 +1,6 @@
 package com.food.ordering.system.restaurant.service.domain;
 
 
-import com.food.ordering.system.order.service.domain.event.publisher.DomainEventPublisher;
 import com.food.ordering.system.order.service.domain.valueobject.OrderApprovalStatus;
 import com.food.ordering.system.restaurant.service.domain.entity.Restaurant;
 import com.food.ordering.system.restaurant.service.domain.event.OrderApprovalEvent;
@@ -24,9 +23,7 @@ import static com.food.ordering.system.order.service.domain.DomainConstants.UTC;
 public class RestaurantDomainServiceImpl implements RestaurantDomainService {
 
     @Override
-    public OrderApprovalEvent validateOrder(Restaurant restaurant, List<String> failureMessages,
-                                            DomainEventPublisher<OrderApprovedEvent> orderApprovedlEventDomainEventPublisher,
-                                            DomainEventPublisher<OrderRejectedEvent> orderRejectedEventDomainEventPublisher) {
+    public OrderApprovalEvent validateOrder(Restaurant restaurant, List<String> failureMessages) {
 
         restaurant.validateOrder(failureMessages);
         log.info("validating order with id: {}", restaurant.getOrderDetail().getId().getValue());
@@ -34,15 +31,17 @@ public class RestaurantDomainServiceImpl implements RestaurantDomainService {
         if(failureMessages.isEmpty()) {
             log.info("Order is approved for order id: {}", restaurant.getOrderDetail().getId().getValue());
             restaurant.constructOrderApproval(OrderApprovalStatus.APPROVED);
-
-            return new OrderApprovedEvent(restaurant.getOrderApproval(), restaurant.getId(), failureMessages,
-                    ZonedDateTime.now(ZoneId.of(UTC)), orderApprovedlEventDomainEventPublisher);
-        }else {
+            return new OrderApprovedEvent(restaurant.getOrderApproval(),
+                    restaurant.getId(),
+                    failureMessages,
+                    ZonedDateTime.now(ZoneId.of(UTC)));
+        } else {
             log.info("Order is rejected for order id: {}", restaurant.getOrderDetail().getId().getValue());
             restaurant.constructOrderApproval(OrderApprovalStatus.REJECTED);
-
-            return new OrderRejectedEvent(restaurant.getOrderApproval(), restaurant.getId(), failureMessages,
-                    ZonedDateTime.now(ZoneId.of(UTC)), orderRejectedEventDomainEventPublisher);
+            return new OrderRejectedEvent(restaurant.getOrderApproval(),
+                    restaurant.getId(),
+                    failureMessages,
+                    ZonedDateTime.now(ZoneId.of(UTC)));
         }
     }
 }

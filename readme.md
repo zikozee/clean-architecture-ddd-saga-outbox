@@ -3,6 +3,18 @@
 - run mvn clean install 
   - to validate no dependency issue
 
+
+## start kafka n database
+cd infrastructure/docker-compose/
+
+- docker-compose -f common.yml -f kafka-cluster.yml up
+- check http://localhost:9000
+
+- docker-compose -f postgres-compose.yml up
+
+### check event in kafka topic
+kcat -C -b localhost:19092 -t payment-request
+
 ## VISUALIZING ARCHITECTURE OF PROJECT
 - visualize project/service structure with Graphviz 
   - installation instruction from - https://graphviz.org/
@@ -20,8 +32,7 @@
    - this can be likened to the uses cases in clean architecture
  
 
-# check event in kafka topic
-kcat -C -b localhost:19092 -t payment-request
+
 
 
 # FLOW
@@ -32,3 +43,28 @@ kcat -C -b localhost:19092 -t payment-request
     - order publisher --> payment listener
     - payment publisher --> order listener
 - for testing sake if you check the init-data.sql, the  customer id used in payment-container was the same inserted for order-container
+
+
+## OUTBOX PATTERN UPDATED FLOW
+- outbox ensures/entails domain-events and db operations are processed in a same ACID transaction
+  - events -> saved to outbox table(s)
+  - db opertaions -> saved/read from order/payment/restaurant tables
+
+- 1. Order Service
+- created a payment-outbox-object (save) from the orderCreatedEvent in orderCreateCommandHandler with outbox status STARTED
+- then the PaymentOutboxScheduler fetch this data and publish it to **_payment-request_** topic
+- 
+- 2. Payment Service
+- then payment-service listens to the **_payment-request_**, process payments and publish the result to **_payment-response_** topic
+- 
+- 3. Order Service
+- the listener for **_payment-response_** topic calls the **_process_** method of the OrderPaymentSaga (MAIN SPRING TRANSACTION CASCADED FROM process method)
+  - the order status is updated to paid in the process method via the orderDomainService.payOrder
+  - which returns the orderPaidEvent, then order is updated
+  - after which we update the payment-outbox-object with the new order and saga statuses via the paymentOutboxHelper
+  - In same saga flow, we have created approvalEvents in the approval-outbox-tbale via the approvalOutboxHelper
+- now When the RestaurantApprovalOutboxScheduler runs, it will read this event and publish it to the **_restaurant-approval-request topic_**
+- 
+- 4. Restaurant-Service
+- the listener for **_restaurant-approval-request_** topic will listen and process 
+- continue from 86 - part2
